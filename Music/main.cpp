@@ -84,19 +84,31 @@ int main()
 
 while (myButton == 0);
 /*
-buzzer.write(0.5f);
-for (int i = 440; i < 1000; i++){
-    printf("%d\n", (100/i));
-    buzzer.period_us((100/i));
-	buzzer.write(0.5f);
-    wait_us(50000);
+buzzer.write(0.0f);
+while(1){
+    for (int i = 2000; i > 900; i -= 10){
+        printf("i = %d\n", i);
+        buzzer.period_us(i);
+        buzzer.write(0.5f);
+        wait_us(1000);
+    }
+
+    for (int i = 900; i < 2000; i += 10){
+        printf("i = %d\n", i);
+        buzzer.period_us(i);
+        buzzer.write(0.5f);
+        wait_us(1000);
+    }
 }
+buzzer.write(0.0f);
 */
+
 playRushE();
 playFrog();
 playRick();
 playImperialMarch();
 playMeglovania();
+
 
 while(1){}
 
