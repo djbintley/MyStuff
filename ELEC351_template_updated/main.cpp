@@ -1,35 +1,18 @@
 #include "mbed.h"
 #include "uop_msb.h"
+#include "Sampling.hpp"
+#include "SDCardLog.hpp"
+#include "SensorData.hpp"
+#include "Serial.hpp"
+#include "LEDBar.hpp"
 
-/*
-#define TRAFFIC_LIGHT_DELAY 1000
-#define ENV_SAMPLE_DELAY 500
-
-// Function prototypes
-void Traffic_Lights();
-void LCD_BackLight_Effect();
-void Bar_Flash();
-void clearMatrix();
-void matrix_scan();
-void sevenseg_count_thread();
-float sample_adc(int);
-void environment_data();
-void dac_thread();
-void dac_out(int, float);
-void mpu_thread();
-void button_thread();
-
-// Thread handles
-Thread traffic_thr;
-Thread lcd_bl_thr;
-Thread bar_thr;
-Thread matrix_thr;
-Thread seven_seg_thr;
-Thread env_sensor_thr;
-Thread dac_thr;
-Thread motion_thr;
-Thread button_thr;
-*/
+SensorData sensorData;
+LedBarDisplay ledBar(LED_D0_PIN, LED_D1_PIN, LED_D2_PIN, LED_D3_PIN, LED_D4_PIN, LED_D5_PIN, LED_D6_PIN, LED_D7_PIN, // Data pins D0–D7
+    LED_RED_LE_PIN,      // RED latch
+    LED_GRN_LE_PIN,      // GREEN latch
+    LED_BLUE_LE_PIN,      // BLUE latch
+    LED_BAR_OE_PIN       // Enable (active low)
+);
 
 //Function Prototypes
 void SDCardMain();
@@ -43,47 +26,16 @@ Thread SerialThread;
 int main()
 {
     //Start Threads
-    SensorThread.start(SensorMain);
-    SDThread.start(SDCardMain);
-    //SerialThread.start(SerialMain);
+    SensorThread.start(callback(sampling_thread));
+    SDThread.start(callback(SDCard_thread));
+    SerialThread.start(callback(serial_thread));
 
     //Set Thread Priorities, sensors highest and serial lowest
     SensorThread.set_priority(osPriorityHigh);
     SDThread.set_priority(osPriorityNormal);
-    //SerialThread.set_priority(osPriorityLow);
+    SerialThread.set_priority(osPriorityLow);
     
     printf("\n\nStarting...\n");
 
 
-}
-
-void SensorMain(){
-    while(1){
-    printf("ldr says: %f\n", ldr.read());
-    ThisThread::sleep_for(1000);
-    }
-}
-
-void SDCardMain(){
-    while(1){
-        //Sleep while Data is collected to stop wear to SD card
-        ThisThread::sleep_for(60000);
-
-        if(sd.card_inserted()){
-            // Create test string 
-            char SD_Data[] = "Dave is Cool\n";
-            // Write the string to a file
-            sd.write_file("msb_test.txt", SD_Data,true);
-            // print the contents of the file we've just written to
-            sd.print_file("msb_test.txt",true);
-            // Copy the contents back into another array
-            char array_to_copy_to[256];
-            sd.copy_file("msb_test.txt", array_to_copy_to,sizeof(array_to_copy_to),true);
-            // Print the new array
-            printf("%s\n",array_to_copy_to);
-        }
-        else{
-            printf("SD card not detected...\r\n");
-        }  
-    }
 }

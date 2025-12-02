@@ -1,26 +1,36 @@
 #include "SDCardLog.hpp"
 
 char SD_File[] = "Enviroment_Data.csv";
+static const int BUFFER_SIZE = 60;
 
 //Function that runs the SD Card thread
-void SDCard_thread()
-{
+void SDCard_thread(){
+    float t, p, l;
+    // Buffer to hold 60 CSV rows
+    char buffer[BUFFER_SIZE][64];
+    int index = 0;
     while (true) {
-        char SD_Data[] = "Dave is Cool\n";
-        int repeats = 0;
-        // TODO: read from queue
-        // TODO: write CSV line to SD every N samples
-        
-        if (repeats == 600){
+        sensorData.get(t, p, l);
+        //Converts values into CSV 
+        sprintf(buffer[index], "%.2f,%.2f,%.0f\n", t, p, l);
+        index++;
+        if (index >= BUFFER_SIZE){
             if(sd.card_inserted()){
-                // Append the string to a file
-                sd.write_file(SD_File, SD_Data, true);
+                // Write all 60 buffered lines
+                for (int i = 0; i < BUFFER_SIZE; i++) {
+                    int result = sd.write_file((char*)SD_File, buffer[i], true);
+
+                    if (result != 0) {
+                        printf("SD Card failed writing line %d\n", i);
+                    }
+                }
+                printf("SD Card Updated\r\n");
             }else{
                 printf("SD card not detected...\r\n");
             }   
-            repeats = 0;
+            index = 0;
         }
-        repeats++;
-        ThisThread::sleep_for(100ms); 
+        //Sleep while sensors read again
+        ThisThread::sleep_for(1s); 
     }
 }

@@ -4,7 +4,8 @@
 #include "mbed.h"
 #include "SensorData.hpp"
 
+extern SensorData sensorData;
 //Function to repeatedly call in the SD Card thread
-void logging_thread();
+void SDCard_thread();
 
 #endif
