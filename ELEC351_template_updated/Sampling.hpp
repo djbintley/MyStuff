@@ -4,6 +4,7 @@
 #include "mbed.h"
 #include "uop_msb.h"
 #include "SensorData.hpp"
+#include "SDCardLog.hpp"
 
 //Include the sensor data
 extern SensorData sensorData;

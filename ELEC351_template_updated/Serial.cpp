@@ -1,7 +1,7 @@
 #include "Serial.hpp"
 
 //Set Default LED Bar display mode to temperature
-static char selectedMode = 'T';   // T = temperature, P = pressure, L = light
+static char selectedMode = 'L';   // T = temperature, P = pressure, L = light
 //Serial interface
 static BufferedSerial pc(USBTX, USBRX, 115200);
 
@@ -34,24 +34,24 @@ void serial_thread() {
             if (rx == 'T' || rx == 'P' || rx == 'L') {
                 selectedMode = rx;
                 printf("LED Bar now displaying: '%c'\r\n", selectedMode);
-            }
-        }else{
+            }else{
             printf("Invalid Character Input");
+            }
         }
 
         //Update LED Bar
         switch (selectedMode) {
             case 'T':
-                //ledBar.setLevel((int)t);
-                printf("T = %.2f C", t);     
+                ledBar.setLevel((int)t);
+                //printf("T = %.2f C", t);     
                 break;
             case 'P':
-                //ledBar.setLevel((int)(p / 40)); 
-                printf("P = %.2f mbar", p);   
+                ledBar.setLevel((int)(p / 40)); 
+                //printf("P = %.2f mbar", p);   
                 break;
             case 'L':
-                //ledBar.setLevel((int)(l / 2000));
-                printf("L = %.0f", l);  
+                ledBar.setLevel((int)(24-(l/2730)));
+               // printf("L = %.0f", l/2730);  
                 break;
         }
         //Need to sleep while data values are not being read

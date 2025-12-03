@@ -7,7 +7,7 @@
 #include "Sampling.hpp"
 
 extern SensorData sensorData;
-//extern LedBarDisplay ledBar;
+extern LedBarDisplay ledBar;
 
 //Function that handles two - way serial communication
 //To be run in the serial thread
