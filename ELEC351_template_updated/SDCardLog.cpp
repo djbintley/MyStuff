@@ -1,10 +1,15 @@
+/*
+SDCardLog.cpp: This file contains code that writes data into a buffer every second, and then every minute writes the buffer to an SD Card. This is done in the SD Card thread.
+Author: David Bintley
+Student Number: 10855323
+*/
 #include "SDCardLog.hpp"
 
 char SD_File[] = "Enviroment_Data.csv";
 static const int BUFFER_SIZE = 60;     //number of samples to buffer
 static const int LINE_MAX = 64;        //bytes per CSV line
 
- // Local buffer and mutex/state (file-scope)
+// Local buffer and mutex
 static char sample_buffer[BUFFER_SIZE][LINE_MAX];
 static int buffer_index = 0;
 static bool buffer_full = false;
@@ -23,9 +28,10 @@ void sd_push_sample(float temperature, float pressure, float light){
     strncpy(sample_buffer[buffer_index], tmp, LINE_MAX - 1);
     sample_buffer[buffer_index][LINE_MAX - 1] = '\0';
     buffer_index++;
+    //Check to see if we need to push the data to the SD card
     if (buffer_index >= BUFFER_SIZE) {
         buffer_full = true;
-        buffer_index = 0; // prepare for overwrite after flush (circular)
+        buffer_index = 0; // Go back to start of buffer
     }
     buffer_mutex.unlock();
 
@@ -36,17 +42,17 @@ void sd_push_sample(float temperature, float pressure, float light){
 //Copies all the data from the circular buffer and the writes it to the SD card
 void SDCard_thread()
 {
-    // big buffer: BUFFER_SIZE * LINE_MAX, but keep a little headroom
+    //big buffer
     static const int BIGBUF_MAX = BUFFER_SIZE * LINE_MAX + 16;
     char bigbuf[BIGBUF_MAX];
 
     while (true) {
         bool to_write = false;
-
         // Check buffer state
         buffer_mutex.lock();
         if (buffer_full) {
-            //Copy the whole buffer out while holding the lock to keep data consistent
+            //Copy the whole buffer out while in the mutex so nothing gets messed up
+            //Don't copy straight into the SD card so we don't spend too long in the mutex
             char tmp_copy[BUFFER_SIZE][LINE_MAX];
             for (int i = 0; i < BUFFER_SIZE; ++i) {
                 strncpy(tmp_copy[i], sample_buffer[i], LINE_MAX);
@@ -66,9 +72,10 @@ void SDCard_thread()
             }
             bigbuf[offset] = '\0';
 
-            // Only now write once to SD card
+            //Do one big write to the SD Card in order to reduce wear
             if (sd.card_inserted()) {
                 int result = sd.write_file(SD_File, bigbuf, true);
+                //Check it actually wrote
                 if (result == 0) {
                     printf("SD Card Written to\r\n");
                 } else {

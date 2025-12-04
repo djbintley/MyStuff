@@ -1,3 +1,9 @@
+/*
+LEDBar.hpp: This header file declares code for constructiong the LEDBar  as well as code for strobing segments of the bar and setting the bar altogether and by individual segments.
+This file also declare private variables for the use of objects of this class.
+Author: David Bintley
+Student Number: 10855323
+*/
 #ifndef LEDBar_HPP
 #define LEDBar_HPP
 

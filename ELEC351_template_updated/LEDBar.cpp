@@ -1,3 +1,8 @@
+/*
+LEDBar.cpp: This file contains code for constructiong the LEDBar  as well as code for strobing segments of the bar and setting the bar altogether and by individual segments.
+Author: David Bintley
+Student Number: 10855323
+*/
 #include "LEDBar.hpp"
 
 //Constructor
@@ -54,7 +59,7 @@ void LedBarDisplay::setLevel(int level){
 
     //Set the level for each section
     if (level <= 8) {
-        red = (1 << level) - 1; // fill up to 'level'
+        red = (1 << level) - 1; //fill up to level
     } else {
         red = 0xFF;
         int temp = level - 8;

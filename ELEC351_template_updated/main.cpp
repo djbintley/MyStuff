@@ -1,3 +1,8 @@
+/*
+Main.cpp: This File initialises all of the threads as well as the data and LED Bar objects.
+Author: David Bintley
+Student Number: 10855323
+*/
 #include "mbed.h"
 #include "uop_msb.h"
 #include "Sampling.hpp"
@@ -6,14 +11,10 @@
 #include "Serial.hpp"
 #include "LEDBar.hpp"
 
+//Initialise Sensor Data object
 SensorData sensorData;
-EnvSensor SENSE;
-LedBarDisplay ledBar(LED_D0_PIN, LED_D1_PIN, LED_D2_PIN, LED_D3_PIN, LED_D4_PIN, LED_D5_PIN, LED_D6_PIN, LED_D7_PIN, // Data pins D0–D7
-    LED_RED_LE_PIN,      // RED latch
-    LED_GRN_LE_PIN,      // GREEN latch
-    LED_BLUE_LE_PIN,      // BLUE latch
-    LED_BAR_OE_PIN       // Enable (active low)
-);
+//Initialise LED bar
+LedBarDisplay ledBar(LED_D0_PIN, LED_D1_PIN, LED_D2_PIN, LED_D3_PIN, LED_D4_PIN, LED_D5_PIN, LED_D6_PIN, LED_D7_PIN, LED_RED_LE_PIN,      LED_GRN_LE_PIN,  LED_BLUE_LE_PIN,   LED_BAR_OE_PIN      );
 
 //Threads
 Thread SensorThread;
@@ -22,11 +23,6 @@ Thread SerialThread;
 
 int main()
 {   
-    ThisThread::sleep_for(500ms);
-    printf("\nMSB4 SENSOR SELF TEST\n");
-    printf("TEMP = %.3f\n", SENSE.getTemperature());
-    printf("PRESS = %.3f\n", SENSE.getPressure());
-    while(1);
     //Start Threads
     SensorThread.start(callback(sampling_thread));
     SDThread.start(callback(SDCard_thread));

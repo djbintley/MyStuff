@@ -1,3 +1,8 @@
+/*
+SensorData.hpp: This header file declares the SensorData Class, its constructor, api and private variables. 
+Author: David Bintley
+Student Number: 10855323
+*/
 #ifndef Sensor_HPP
 #define Sensor_HPP
 

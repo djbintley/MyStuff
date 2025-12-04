@@ -1,3 +1,8 @@
+/*
+SensorData.cpp: This file contains code for the SensorData class. It provides variables to store Temperature, Pressure and Light as well as APIs to set and read them in a threadsafe manner.
+Author: David Bintley
+Student Number: 10855323
+*/
 #include "SensorData.hpp"
 
 SensorData::SensorData():
@@ -9,6 +14,7 @@ SensorData::SensorData():
 
 //API to set values
 void SensorData::set(float newTemp, float newPress, float newLight){
+    //Lock so that nothing interrupts while values are being set
     mutex.lock();
     temperature = newTemp;
     pressure = newPress;
@@ -18,6 +24,7 @@ void SensorData::set(float newTemp, float newPress, float newLight){
 
 //API to read values
 void SensorData::get(float &reqTemp, float &reqPress, float &reqLight){
+    //Lock so that nothing interrupts while values are being read
     mutex.lock();
     reqTemp = temperature;
     reqPress = pressure;
