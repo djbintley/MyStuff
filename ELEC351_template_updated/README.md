@@ -26,3 +26,5 @@ Alarm: The alarm is handled in Sampling.cpp and it detects accurately when the l
 You can test this by listening for the beep and shining a torch at or covering the LDR or inceasing or decreasing the temperature or pressure.
 
 Code Structure: There are comments throughout as well as file headers.
+
+YouTube Demonstration: https://youtu.be/L10q9zSEE9o?si=Fgne8oT5xqoNIiJQ
