@@ -29,24 +29,23 @@ PWM Breakout Channels
 
 Robot robot;
 
-void setup()
-{
+void setup(){
+    // initialize digital pin LED_BUILTIN as an output.
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    
     Serial.begin(115200);
-
     robot.begin();
-
     delay(2000);
-
     robot.stand();
 }
 
-void loop()
-{
+void loop(){
+    digitalWrite(LED_BUILTIN, HIGH);
     robot.drive(120,120);
-
     delay(3000);
-
+    digitalWrite(LED_BUILTIN, LOW);
     robot.drive(0,0);
-
     delay(3000);
 }
+
