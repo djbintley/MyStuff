@@ -25,6 +25,16 @@ int Leg::angleToPWM(float angle)
 
 void Leg::setAngles(float shoulder, float knee)
 {
+    // Apply calibration
+    if(shoulderCal->invert) shoulder = 180 - shoulder;
+    if(kneeCal->invert) knee = 180 - knee;
+
+    shoulder += shoulderCal->offset;
+    knee += kneeCal->offset;
+
+    shoulder = constrain(shoulder, 0, 180);
+    knee  = constrain(knee, 0, 180);
+
     _pwm->setPWM(shoulderServo,0,angleToPWM(shoulder));
     _pwm->setPWM(kneeServo,0,angleToPWM(knee));
 }
@@ -44,4 +54,10 @@ void Leg::moveFoot(float x, float y)
     shoulder = degrees(shoulder);
 
     setAngles(shoulder,knee);
+}
+
+void Leg::setCalibration(ServoCal* sCal, ServoCal* kCal)
+{
+    shoulderCal = sCal;
+    kneeCal = kCal;
 }

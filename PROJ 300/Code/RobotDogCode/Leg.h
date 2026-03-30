@@ -3,6 +3,7 @@
 
 #include <Adafruit_PWMServoDriver.h>
 #include "Geometry.h"
+#include "Calibration.h"
 
 class Leg
 {
@@ -32,6 +33,11 @@ private:
     float L2;
 
     int angleToPWM(float angle);
+
+    void setCalibration(ServoCal* shoulderCal, ServoCal* kneeCal);
+
+    ServoCal* shoulderCal;
+    ServoCal* kneeCal;
 };
 
 #endif

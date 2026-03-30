@@ -41,11 +41,29 @@ void setup(){
 }
 
 void loop(){
-    digitalWrite(LED_BUILTIN, HIGH);
-    robot.drive(120,120);
-    delay(3000);
-    digitalWrite(LED_BUILTIN, LOW);
-    robot.drive(0,0);
-    delay(3000);
+    calibrationMode();
 }
 
+int currentServo = 8;  // start at first servo
+int angle = 90;
+
+void calibrationMode(){
+    if(Serial.available()){
+        char c = Serial.read();
+
+        if(c == 'n') currentServo++;
+        if(c == 'p') currentServo--;
+
+        if(c == 'u') angle += 5;
+        if(c == 'd') angle -= 5;
+
+        angle = constrain(angle,0,180);
+
+        Serial.print("Servo: ");
+        Serial.print(currentServo);
+        Serial.print(" Angle: ");
+        Serial.println(angle);
+
+        robot.debugSetServo(currentServo, angle);
+    }
+}

@@ -5,6 +5,7 @@
 #include "Leg.h"
 #include "Wheel.h"
 #include "Geometry.h"
+#include "Calibration.h"
 
 class Robot
 {
@@ -16,11 +17,14 @@ public:
 
     void drive(int leftSpeed, int rightSpeed);
 
+    void debugSetServo(int channel, float angle);
+
 private:
 
     Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
     RobotGeometry geometry;
+    Calibration cal;
 
     Leg frontLeft;
     Leg frontRight;
