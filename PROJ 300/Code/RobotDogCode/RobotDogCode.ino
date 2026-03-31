@@ -14,11 +14,11 @@ PWM Breakout Channels
 6  - Rear Right Wheel A
 7  - Rear Right Wheel B
 
-8  - Front Left Shoulder
-9  - Front Left Knee
+8  - Front Left Shoulder - Second from bottom left
+9  - Front Left Knee - Third from bottom right
 
-10 - Front Right Shoulder
-11 - Front Right Knee
+10 - Front Right Shoulder - Second from bottom right
+11 - Front Right Knee   - Bottom right
 
 12 - Rear Left Shoulder
 13 - Rear Left Knee
@@ -44,26 +44,29 @@ void loop(){
     calibrationMode();
 }
 
-int currentServo = 8;  // start at first servo
+int currentServo = 8;  //Start at first servo
 int angle = 90;
 
 void calibrationMode(){
     if(Serial.available()){
-        char c = Serial.read();
+            char c = Serial.read();
+            if (c == ' '){
+            }else{
+            if(c == 'n') currentServo++;
+            if(c == 'p') currentServo--;
 
-        if(c == 'n') currentServo++;
-        if(c == 'p') currentServo--;
+            if(c == 'u') angle += 5;
+            if(c == 'd') angle -= 5;
 
-        if(c == 'u') angle += 5;
-        if(c == 'd') angle -= 5;
+            angle = constrain(angle,0,180);
+            currentServo = constrain(currentServo,8,15);
 
-        angle = constrain(angle,0,180);
+            Serial.print("Servo: ");
+            Serial.print(currentServo);
+            Serial.print(" Angle: ");
+            Serial.println(angle);
 
-        Serial.print("Servo: ");
-        Serial.print(currentServo);
-        Serial.print(" Angle: ");
-        Serial.println(angle);
-
-        robot.debugSetServo(currentServo, angle);
+            robot.debugSetServo(currentServo, angle);
+        }
     }
 }

@@ -20,6 +20,8 @@ public:
 
     void moveFoot(float x, float y);
 
+    void setCalibration(ServoCal* shoulderCal, ServoCal* kneeCal);
+
 private:
 
     Adafruit_PWMServoDriver* _pwm;
@@ -33,8 +35,6 @@ private:
     float L2;
 
     int angleToPWM(float angle);
-
-    void setCalibration(ServoCal* shoulderCal, ServoCal* kneeCal);
 
     ServoCal* shoulderCal;
     ServoCal* kneeCal;
