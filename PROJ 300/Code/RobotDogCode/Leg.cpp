@@ -46,9 +46,21 @@ void Leg::moveFoot(float x, float y)
     float knee =
         acos((L1*L1 + L2*L2 - d*d) / (2*L1*L2));
 
-    float shoulder =
-        atan2(y,x) +
-        acos((d*d + L1*L1 - L2*L2)/(2*L1*d));
+    if (y < 0 && x < 0){
+        float shoulder =
+            atan2(y,x) -
+            acos((d*d + L1*L1 - L2*L2)/(2*L1*d));
+    } else if (y < 0 && x > 0){ 
+        float shoulder =
+            180 +
+            atan2(y,x) -
+            acos((d*d + L1*L1 - L2*L2)/(2*L1*d));
+    } else if (y > 0 && x > 0){ 
+        float shoulder =
+            270 -
+            atan2(x,y) -
+            acos((d*d + L1*L1 - L2*L2)/(2*L1*d));
+    }
 
     knee = degrees(knee);
     shoulder = degrees(shoulder);

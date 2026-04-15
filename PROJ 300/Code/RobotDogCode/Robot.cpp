@@ -5,10 +5,15 @@ void Robot::begin(){
     pwm.setPWMFreq(50);
 
     //Calibration
-    for(int i=0;i<4;i++){
-    cal.shoulder[i] = {0,false};
-    cal.knee[i]     = {0,false};
-    }
+    cal.shoulder[0] = {0,false};
+    cal.knee[0]     = {0,false};
+    cal.shoulder[1] = {0,true};
+    cal.knee[1]     = {0,true};
+    cal.shoulder[2] = {0,false};
+    cal.knee[2]     = {0,false};
+    cal.shoulder[3] = {0,true};
+    cal.knee[3]     = {0,true};
+
 
     //Wheels
     wheelFL.begin(&pwm,0,1);
