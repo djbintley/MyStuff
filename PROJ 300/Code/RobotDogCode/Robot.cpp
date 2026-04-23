@@ -5,17 +5,17 @@ void Robot::begin(){
     pwm.setPWMFreq(50);
 
     //Calibration
-    cal.shoulder[0] = {0,true};
-    cal.knee[0]     = {0,false};
+    cal.shoulder[0] = {9,true};
+    cal.knee[0]     = {6,false};
 
     cal.shoulder[1] = {0,false};
-    cal.knee[1]     = {15,true};
+    cal.knee[1]     = {5,true};
 
     cal.shoulder[2] = {0,true};
-    cal.knee[2]     = {0,false};
+    cal.knee[2]     = {5,false};
 
-    cal.shoulder[3] = {0,false};
-    cal.knee[3]     = {0,true};
+    cal.shoulder[3] = {-5,false};
+    cal.knee[3]     = {5,true};
 
 
     //Wheels
@@ -37,11 +37,29 @@ void Robot::begin(){
 }
 
 void Robot::stand(){
-    frontLeft.moveFoot(60,-200);
-    frontRight.moveFoot(60,-200);
+    frontLeft.moveFoot(30,-200);
+    frontRight.moveFoot(30,-200);
 
-    rearLeft.moveFoot(60,-200);
-    rearRight.moveFoot(60,-200);
+    rearLeft.moveFoot(30,-200);
+    rearRight.moveFoot(30,-200);
+}
+
+void Robot::crouch(){
+    int x = -60; 
+    int y = -100;
+    frontLeft.moveFoot(x,y);
+    frontRight.moveFoot(x,y);
+
+    rearLeft.moveFoot(x,y);
+    rearRight.moveFoot(x,y);
+}
+
+void Robot::SetPos(int x, int y){
+    frontLeft.moveFoot(x,y);
+    frontRight.moveFoot(x,y);
+
+    rearLeft.moveFoot(x,y);
+    rearRight.moveFoot(x,y);
 }
 
 void Robot::drive(int leftSpeed, int rightSpeed){

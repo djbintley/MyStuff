@@ -41,6 +41,7 @@ void Leg::setAngles(float shoulder, float knee)
 
     Serial.print("Final Shoulder: ");
     Serial.println(shoulder);
+    Serial.println();
 }
 
 void Leg::moveFoot(float x, float y)

@@ -15,6 +15,10 @@ public:
 
     void stand();
 
+    void crouch();
+
+    void SetPos(int x, int y);
+
     void drive(int leftSpeed, int rightSpeed);
 
     void debugSetServo(int channel, float angle);

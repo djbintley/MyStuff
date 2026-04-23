@@ -14,16 +14,16 @@ PWM Breakout Channels
 6  - Rear Right Wheel A
 7  - Rear Right Wheel B
 d
-8  - Front Left Shoulder - Second from bottom left - invert
-9  - Front Left Knee - Third from bottom right
+8  - Front Left Shoulder - Second from bottom left - invert + 10 degrees
+9  - Front Left Knee - Third from bottom right +3
 
 10 - Front Right Shoulder - Second from bottom right    
 11 - Front Right Knee   - Bottom right - invert (5)
 
-12 - Rear Left Shoulder    -  (5)
+12 - Rear Left Shoulder    -  (+5)
 13 - Rear Left Knee
 
-14 - Rear Right Shoulder - Invert (5)
+14 - Rear Right Shoulder - Invert (-5)
 15 - Rear Right Knee - Invert 
 */
 
@@ -41,10 +41,41 @@ void setup(){
     Serial.println();
     Serial.println("Good Morning");
     robot.stand();
+    //robot.crouch();
 }
 
 void loop(){
-    calibrationMode();
+    //calibrationMode();
+    PositionMode();
+}
+
+int x = 30;
+int y = -200;
+
+void PositionMode(){
+    if(Serial.available()){
+        char c = Serial.read();
+        
+        if(c == 'w') {
+            for(int i = 0; i <5; i++){
+            y+=1;
+            robot.SetPos(x, y);
+            delay(50);
+            }
+        }
+
+        if(c == 's') y-=5;
+
+        if(c == 'd') x-=5;
+        if(c == 'a') x+=5;
+
+        Serial.print("X: ");
+        Serial.print(x);
+        Serial.print(", Y: ");
+        Serial.println(y);
+
+        robot.SetPos(x, y);
+    }
 }
 
 int currentServo = 8;  //Start at first servo
