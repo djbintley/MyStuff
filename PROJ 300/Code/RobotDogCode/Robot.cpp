@@ -5,13 +5,16 @@ void Robot::begin(){
     pwm.setPWMFreq(50);
 
     //Calibration
-    cal.shoulder[0] = {0,false};
+    cal.shoulder[0] = {0,true};
     cal.knee[0]     = {0,false};
-    cal.shoulder[1] = {0,true};
-    cal.knee[1]     = {0,true};
-    cal.shoulder[2] = {0,false};
+
+    cal.shoulder[1] = {0,false};
+    cal.knee[1]     = {15,true};
+
+    cal.shoulder[2] = {0,true};
     cal.knee[2]     = {0,false};
-    cal.shoulder[3] = {0,true};
+
+    cal.shoulder[3] = {0,false};
     cal.knee[3]     = {0,true};
 
 
@@ -34,11 +37,11 @@ void Robot::begin(){
 }
 
 void Robot::stand(){
-    frontLeft.moveFoot(30,-200);
-    frontRight.moveFoot(30,-200);
+    frontLeft.moveFoot(60,-200);
+    frontRight.moveFoot(60,-200);
 
-    rearLeft.moveFoot(-30,-200);
-    rearRight.moveFoot(-30,-200);
+    rearLeft.moveFoot(60,-200);
+    rearRight.moveFoot(60,-200);
 }
 
 void Robot::drive(int leftSpeed, int rightSpeed){

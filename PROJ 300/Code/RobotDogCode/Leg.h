@@ -12,9 +12,9 @@ public:
     Leg(){}
 
     void begin(Adafruit_PWMServoDriver* pwm,
-               int shoulderChannel,
-               int kneeChannel,
-               RobotGeometry* geo);
+           int shoulderChannel,
+           int kneeChannel,
+           RobotGeometry* geo);
 
     void setAngles(float shoulder, float knee);
 
@@ -33,6 +33,8 @@ private:
 
     float L1;
     float L2;
+
+    bool isLeft;
 
     int angleToPWM(float angle);
 

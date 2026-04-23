@@ -14,10 +14,10 @@ PWM Breakout Channels
 6  - Rear Right Wheel A
 7  - Rear Right Wheel B
 d
-8  - Front Left Shoulder - Second from bottom left 
+8  - Front Left Shoulder - Second from bottom left - invert
 9  - Front Left Knee - Third from bottom right
 
-10 - Front Right Shoulder - Second from bottom right    - invert
+10 - Front Right Shoulder - Second from bottom right    
 11 - Front Right Knee   - Bottom right - invert (5)
 
 12 - Rear Left Shoulder    -  (5)
@@ -37,7 +37,10 @@ void setup(){
     Serial.begin(115200);
     robot.begin();
     delay(2000);
-    //robot.stand();
+    Serial.println();
+    Serial.println();
+    Serial.println("Good Morning");
+    robot.stand();
 }
 
 void loop(){
