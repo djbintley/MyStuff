@@ -64,17 +64,33 @@ void PositionMode(){
             }
         }
 
-        if(c == 's') y-=5;
+        if(c == 's') {
+            for(int i = 0; i <5; i++){
+            y-=1;
+            robot.SetPos(x, y);
+            delay(50);
+            }
+        }
 
-        if(c == 'd') x-=5;
-        if(c == 'a') x+=5;
+        if(c == 'd') {
+            for(int i = 0; i <5; i++){
+            x-=1;
+            robot.SetPos(x, y);
+            delay(50);
+            }
+        }
+        if(c == 'a') {
+            for(int i = 0; i <5; i++){
+            x+=1;
+            robot.SetPos(x, y);
+            delay(50);
+            }
+        }
 
         Serial.print("X: ");
         Serial.print(x);
         Serial.print(", Y: ");
         Serial.println(y);
-
-        robot.SetPos(x, y);
     }
 }
 

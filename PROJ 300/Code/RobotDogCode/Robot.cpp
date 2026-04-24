@@ -45,8 +45,8 @@ void Robot::stand(){
 }
 
 void Robot::crouch(){
-    int x = -60; 
-    int y = -100;
+    int x = -65; 
+    int y = -65;
     frontLeft.moveFoot(x,y);
     frontRight.moveFoot(x,y);
 
