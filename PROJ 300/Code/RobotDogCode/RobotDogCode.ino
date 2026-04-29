@@ -40,13 +40,20 @@ void setup(){
     Serial.println();
     Serial.println();
     Serial.println("Good Morning");
+    robot.drive(0,0);
     robot.stand();
     //robot.crouch();
 }
 
 void loop(){
+    robot.drive(255,255);
+    delay(5000);
+    robot.drive(0,0);
+    delay(5000);
+    //robot.walk();
+    //robot.drive(0,0);
     //calibrationMode();
-    PositionMode();
+    //PositionMode();
 }
 
 int x = 30;

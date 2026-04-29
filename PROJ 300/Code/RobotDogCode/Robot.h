@@ -6,6 +6,7 @@
 #include "Wheel.h"
 #include "Geometry.h"
 #include "Calibration.h"
+#include "Gait.h"
 
 class Robot
 {
@@ -23,6 +24,10 @@ public:
 
     void debugSetServo(int channel, float angle);
 
+    Gait gait;
+
+    void walk();
+    
 private:
 
     Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();

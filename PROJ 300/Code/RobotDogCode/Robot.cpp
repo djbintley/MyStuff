@@ -74,3 +74,35 @@ void Robot::debugSetServo(int channel, float angle){
     int pwmVal = map(angle,0,180,102,512);
     pwm.setPWM(channel,0,pwmVal);
 }
+
+void Robot::walk()
+{
+    unsigned long t = millis();
+
+    float x,y;
+
+    // phase offsets for crawl gait
+    float offsets[4] = {0.0, 0.5, 0.75, 0.25};
+
+    float phase;
+
+    // Front Left
+    phase = gait.getPhase(t, offsets[0]);
+    gait.getFootPosition(phase,x,y);
+    frontLeft.moveFoot(x,y);
+
+    // Front Right
+    phase = gait.getPhase(t, offsets[1]);
+    gait.getFootPosition(phase,x,y);
+    frontRight.moveFoot(x,y);
+
+    // Rear Left
+    phase = gait.getPhase(t, offsets[2]);
+    gait.getFootPosition(phase,x,y);
+    rearLeft.moveFoot(x,y);
+
+    // Rear Right
+    phase = gait.getPhase(t, offsets[3]);
+    gait.getFootPosition(phase,x,y);
+    rearRight.moveFoot(x,y);
+}
