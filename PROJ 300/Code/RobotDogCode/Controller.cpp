@@ -1,6 +1,7 @@
-#include <Bluepad32.h>
+#include "Controller.h"
 
-ControllerPtr myControllers[BP32_MAX_GAMEPADS];
+State = 0;
+
 
 // This callback gets called any time a new gamepad is connected.
 // Up to 4 gamepads can be connected at the same time.
@@ -11,6 +12,9 @@ void onConnectedController(ControllerPtr ctl) {
       Serial.printf("CALLBACK: Controller is connected, index=%d\n", i);
       // Additionally, you can get certain gamepad properties like:
       // Model, VID, PID, BTAddr, flags, etc.
+      robot.drive(0,0);
+      robot.stand();
+      State = 0;
       ControllerProperties properties = ctl->getProperties();
       Serial.printf("Controller model: %s, VID=0x%04x, PID=0x%04x\n", ctl->getModelName().c_str(), properties.vendor_id, properties.product_id);
       myControllers[i] = ctl;
@@ -30,6 +34,8 @@ void onDisconnectedController(ControllerPtr ctl) {
   for (int i = 0; i < BP32_MAX_GAMEPADS; i++) {
     if (myControllers[i] == ctl) {
       Serial.printf("CALLBACK: Controller disconnected from index=%d\n", i);
+      robot.drive(0,0);
+      robot.stand();
       myControllers[i] = nullptr;
       foundController = true;
       break;
@@ -40,6 +46,8 @@ void onDisconnectedController(ControllerPtr ctl) {
       Serial.println("CALLBACK: Controller disconnected, but not found in myControllers");
     }
 }
+
+
 
 // ========= SEE CONTROLLER VALUES IN SERIAL MONITOR ========= //
 
@@ -65,6 +73,8 @@ void dumpGamepad(ControllerPtr ctl) {
   ctl->accelZ()        // Accelerometer Z
   );
 }
+
+
 
 // ========= GAME CONTROLLER ACTIONS SECTION ========= //
 
@@ -172,11 +182,13 @@ void processGamepad(ControllerPtr ctl) {
   //== LEFT JOYSTICK - UP ==//
   if (ctl->axisY() <= -25) {
     // code for when left joystick is pushed up
-    }
+    robot.drive(ctl->axisY(),ctl->axisY());
+  }
 
   //== LEFT JOYSTICK - DOWN ==//
   if (ctl->axisY() >= 25) {
     // code for when left joystick is pushed down
+    robot.drive(ctl->axisY(),ctl->axisY());
   }
 
   //== LEFT JOYSTICK - LEFT ==//
@@ -206,6 +218,8 @@ void processGamepad(ControllerPtr ctl) {
   dumpGamepad(ctl);
 }
 
+
+
 void processControllers() {
   for (auto myController : myControllers) {
     if (myController && myController->isConnected() && myController->hasData()) {
@@ -220,23 +234,11 @@ void processControllers() {
 }
 
 
-void setup() {
-  Serial.begin(115200);
-
-  const uint8_t* addr = BP32.localBdAddress();
-  Serial.printf("BD Addr: %2X:%2X:%2X:%2X:%2X:%2X\n", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
-
-  // Setup the Bluepad32 callbacks
-  BP32.setup(&onConnectedController, &onDisconnectedController);
-  BP32.enableVirtualDevice(false);
-}
 
 
-void loop() {
-  // This call fetches all the controllers' data.
 
-  bool dataUpdated = BP32.update();
-  if (dataUpdated)processControllers();
-  vTaskDelay(1);
-  delay(150);
-}
+
+
+
+
+

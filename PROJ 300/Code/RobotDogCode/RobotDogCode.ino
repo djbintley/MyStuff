@@ -33,34 +33,36 @@ d
 //Callibrate angletoPWM()
 //PS4 controller
 
-Robot robot;
+//Robot robot;
 
 void setup(){
     // initialize digital pin LED_BUILTIN as an output.
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);  
     Serial.begin(115200);
-    robot.begin();
-    robot.drive(0,0);
+    const uint8_t* addr = BP32.localBdAddress();
+    Serial.printf("BD Addr: %2X:%2X:%2X:%2X:%2X:%2X\n", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
+    //robot.begin();
+    //robot.drive(0,0);
     delay(2000);
+    // Setup the Bluepad32 callbacks
+    BP32.setup(&onConnectedController, &onDisconnectedController);
+    BP32.enableVirtualDevice(false);
     Serial.println();
     Serial.println();
     Serial.println("Good Morning");
-    robot.stand();
+    //robot.stand();
     //robot.crouch();
 }
 
 void loop(){
-    robot.drive(255,255);
-    delay(5000);
-    robot.drive(0,0);
-    delay(5000);
-    for(int i = 0; i < 400; i++){
-        robot.walk();
-        delay(10);
-    }
-    robot.stand();
-    delay(5000);
+    // This call fetches all the controllers' data.
+    bool dataUpdated = BP32.update();
+    if (dataUpdated)processControllers();
+    vTaskDelay(1);
+    delay(150);
+
+
     //calibrationMode();
     //PositionMode();
 }
