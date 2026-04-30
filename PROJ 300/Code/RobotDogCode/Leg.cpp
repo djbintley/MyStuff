@@ -53,7 +53,7 @@ void Leg::moveFoot(float x, float y)
         // too far
         d = L1 + L2;
     }
-    // Prevent invalid domain for acos
+    // Prevent wrong knee position
     d = constrain(d, 1, L1 + L2 - 1);
 
     float cosKnee = (L1*L1 + L2*L2 - d*d) / (2*L1*L2);

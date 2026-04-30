@@ -89,6 +89,9 @@ void Robot::walk()
     // Front Left
     phase = gait.getPhase(t, offsets[0]);
     gait.getFootPosition(phase,x,y);
+    Serial.print(x);
+    Serial.print(", ");
+    Serial.println(y);
     frontLeft.moveFoot(x,y);
 
     // Front Right

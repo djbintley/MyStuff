@@ -27,20 +27,25 @@ d
 15 - Rear Right Knee - Invert 
 */
 
+
+// TODO:
+//Webcam?
+//Callibrate angletoPWM()
+//PS4 controller
+
 Robot robot;
 
 void setup(){
     // initialize digital pin LED_BUILTIN as an output.
     pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, HIGH);
-    
+    digitalWrite(LED_BUILTIN, HIGH);  
     Serial.begin(115200);
     robot.begin();
+    robot.drive(0,0);
     delay(2000);
     Serial.println();
     Serial.println();
     Serial.println("Good Morning");
-    robot.drive(0,0);
     robot.stand();
     //robot.crouch();
 }
@@ -50,8 +55,12 @@ void loop(){
     delay(5000);
     robot.drive(0,0);
     delay(5000);
-    //robot.walk();
-    //robot.drive(0,0);
+    for(int i = 0; i < 400; i++){
+        robot.walk();
+        delay(10);
+    }
+    robot.stand();
+    delay(5000);
     //calibrationMode();
     //PositionMode();
 }
